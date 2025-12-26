@@ -1,4 +1,19 @@
 services:
   nexus-cli:
     build: .
-    command: ["start", "--headless", "--node-id", "<your-node-id>"]
+    container_name: nexus-prover
+    restart: unless-stopped
+    command: ["start", "--headless", "--node-id", "${NODE_ID}"]
+    environment:
+      - NODE_ID=${NODE_ID}
+    volumes:
+      - nexus-data:/root/.nexus
+    deploy:
+      resources:
+        limits:
+          memory: ${MEMORY_LIMIT:-4G}
+        reservations:
+          memory: ${MEMORY_RESERVE:-2G}
+
+volumes:
+  nexus-data:
