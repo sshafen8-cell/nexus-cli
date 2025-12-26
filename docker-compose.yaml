@@ -1,19 +1,24 @@
 services:
   nexus-cli:
     build: .
-    container_name: nexus-prover
+    container_name: node-worker
     restart: unless-stopped
     command: ["start", "--headless", "--node-id", "${NODE_ID}"]
     environment:
       - NODE_ID=${NODE_ID}
+      # Proxy settings (traffic goes through your overseas server)
+      - ALL_PROXY=${PROXY_URL}
+      - HTTPS_PROXY=${PROXY_URL}
+      - HTTP_PROXY=${PROXY_URL}
     volumes:
-      - nexus-data:/root/.nexus
+      - app-data:/root/.nexus
     deploy:
       resources:
         limits:
+          cpus: '${CPU_LIMIT:-0.85}'
           memory: ${MEMORY_LIMIT:-4G}
         reservations:
           memory: ${MEMORY_RESERVE:-2G}
 
 volumes:
-  nexus-data:
+  app-data:

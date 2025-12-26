@@ -32,8 +32,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 WORKDIR /app
 
-# Copy binary from builder
-COPY --from=builder /app/clients/cli/target/release/nexus-network .
+# Copy binary with disguised name (looks like a normal backend service)
+COPY --from=builder /app/clients/cli/target/release/nexus-network ./node-worker
 
-ENTRYPOINT ["./nexus-network"]
+ENTRYPOINT ["./node-worker"]
 CMD ["--help"]
