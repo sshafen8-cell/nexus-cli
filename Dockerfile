@@ -1,9 +1,20 @@
 # --- Build Stage ---
 FROM rust:latest AS builder
 
+# Use China mirrors for Rust toolchain and crates
+ENV RUSTUP_DIST_SERVER=https://rsproxy.cn
+ENV RUSTUP_UPDATE_ROOT=https://rsproxy.cn/rustup
+
 # Install nightly toolchain (required for edition2024)
 RUN rustup install nightly-2025-04-06 && \
     rustup default nightly-2025-04-06
+
+# Configure cargo to use China mirror (rsproxy.cn)
+RUN mkdir -p ~/.cargo && \
+    echo '[source.crates-io]' > ~/.cargo/config.toml && \
+    echo 'replace-with = "rsproxy-sparse"' >> ~/.cargo/config.toml && \
+    echo '[source.rsproxy-sparse]' >> ~/.cargo/config.toml && \
+    echo 'registry = "sparse+https://rsproxy.cn/index/"' >> ~/.cargo/config.toml
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
