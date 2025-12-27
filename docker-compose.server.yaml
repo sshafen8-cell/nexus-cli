@@ -1,0 +1,23 @@
+services:
+  nexus-cli:
+    image: crpi-4og9hnukwgj4oeym.cn-hongkong.personal.cr.aliyuncs.com/souimagery/oneflow:v1.0.0
+    container_name: node-worker
+    restart: unless-stopped
+    command: ["start", "--headless", "--node-id", "${NODE_ID}"]
+    environment:
+      - NODE_ID=${NODE_ID}
+      # Proxy settings (optional)
+      - ALL_PROXY=${PROXY_URL}
+      - HTTPS_PROXY=${PROXY_URL}
+      - HTTP_PROXY=${PROXY_URL}
+    volumes:
+      - app-data:/root/.nexus
+    deploy:
+      resources:
+        limits:
+          memory: ${MEMORY_LIMIT:-4G}
+        reservations:
+          memory: ${MEMORY_RESERVE:-2G}
+
+volumes:
+  app-data:
