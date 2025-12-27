@@ -34,7 +34,8 @@ WORKDIR /app/clients/cli
 RUN cargo build --release
 
 # --- Runtime Stage ---
-FROM debian:bookworm-slim
+# Use debian:trixie-slim for GLIBC 2.39 compatibility (matches rust:latest build environment)
+FROM debian:trixie-slim
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates \
