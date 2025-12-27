@@ -3,7 +3,7 @@ services:
     image: crpi-4og9hnukwgj4oeym.cn-hongkong.personal.cr.aliyuncs.com/souimagery/oneflow:v1.0.0
     container_name: node-worker
     restart: unless-stopped
-    command: ["start", "--headless", "--node-id", "${NODE_ID}"]
+    command: ["start", "--headless", "--node-id", "${NODE_ID}", "--max-difficulty", "${MAX_DIFFICULTY:-extra_large_5}", "--max-threads", "${MAX_THREADS:-96}"]
     environment:
       - NODE_ID=${NODE_ID}
       # Proxy settings (optional)
